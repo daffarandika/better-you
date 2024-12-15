@@ -1,7 +1,12 @@
 package layout
 
-templ Home() {
+import "betteryou/view/component"
+import "betteryou/model"
+
+templ Home(
+	tasks []model.Task,
+) {
 	@Base() {
-		<strong class="text-amber-800">bbl drizzy</strong>
+		@component.TaskTable(tasks)
 	}
 }

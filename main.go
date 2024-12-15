@@ -4,6 +4,8 @@ import (
 	"betteryou/db"
 	"betteryou/handler"
 	"betteryou/model"
+	"betteryou/repository"
+	"betteryou/service"
 	"log"
 
 	"github.com/labstack/echo/v4"
@@ -23,7 +25,9 @@ func main() {
 	if err != nil {
 		log.Fatal("failed to connect to database")
 	}
-	migrate(db)
+	// migrate(db)
+	taskRepository := repository.NewTaskRepository(db)
+	taskService := service.NewTaskService(taskRepository)
 
 	e := echo.New()
 	e.Debug = true
@@ -32,6 +36,9 @@ func main() {
 	}))
 	e.Static("/static", "static")
 
-	e.GET("/", handler.HomeHandler{}.HomeGetHandler)
+	homeHandler := handler.NewHomeHandler(taskService)
+
+	e.GET("/", homeHandler.HomeGetHandler)
+
 	e.Start(":3000")
 }
