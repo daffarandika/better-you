@@ -1,7 +1,9 @@
 package model
 
+import "gorm.io/gorm"
+
 type ActiveTask struct {
-	ID		int
+	gorm.Model
 	TaskID	int	
 	Task	Task	`gorm:"foreignKey:TaskID;references:ID"`
 	Done	bool
