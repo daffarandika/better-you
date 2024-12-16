@@ -25,7 +25,7 @@ func main() {
 	if err != nil {
 		log.Fatal("failed to connect to database")
 	}
-	// migrate(db)
+
 	taskRepository := repository.NewTaskRepository(db)
 	taskService := service.NewTaskService(taskRepository)
 

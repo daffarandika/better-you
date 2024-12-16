@@ -1,0 +1,14 @@
+package component
+
+import "betteryou/model"
+
+templ TasksContainer(tasks []model.Task) {
+	<div id="task-container" class="h-[50vh] p-5 m-3 rounded-md border border-black">
+		<h2 class="text-lg p-2">Available Tasks</h2>
+			<ul id="task-list" class="flex-grow overflow-y-scroll divide-y divide-black">
+				for _, task := range tasks {
+					@TaskItem(task)
+				}
+			</ul>
+	</div>
+}

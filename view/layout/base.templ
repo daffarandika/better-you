@@ -10,7 +10,9 @@ templ Base() {
 		<link rel="stylesheet" href="static/css/styles.css">
 	</head>
 	<body>
-		{ children... }
+		<div id="app-container" class="flex h-screen">
+			{ children... }
+		</div>
 	</body>
 	</html>
 }

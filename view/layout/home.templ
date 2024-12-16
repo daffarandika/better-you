@@ -7,6 +7,9 @@ templ Home(
 	tasks []model.Task,
 ) {
 	@Base() {
-		@component.TaskTable(tasks)
+		@LeftHalf()
+		@RightHalf(){
+			@component.TasksContainer(tasks)
+		}
 	}
 }

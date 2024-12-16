@@ -20,10 +20,10 @@ func (r TaskRepository) GetAll() ([]model.Task, error) {
 	return tasks, result.Error
 }
 
-func (r TaskRepository) GetByID(taskID int) (model.Task, error) {
+func (r TaskRepository) GetByID(taskID int) (*model.Task, error) {
 	var task model.Task
 	result := r.db.First(&task, taskID)
-	return task, result.Error
+	return &task, result.Error
 }
 
 func (r TaskRepository) Create(task *model.Task) error {
