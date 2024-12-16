@@ -1,0 +1,18 @@
+package component
+
+templ Modal(openText, closeText string) {
+	<button id="open-button" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">{ openText }</button> 
+	<dialog id="modal">
+		<form class="form" method="dialog">
+			{ children... }
+			<button class="button" type="submit">{ closeText }</button>
+		</form>
+	</dialog>
+	<script type="text/javascript">
+		const modal = document.querySelector("#modal");
+		const openButton = document.querySelector("#open-button");
+		openButton.addEventListener("click", () => {
+			modal.showModal();
+		});
+	</script>
+}

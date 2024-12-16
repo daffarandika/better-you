@@ -3,12 +3,17 @@ package component
 import "betteryou/model"
 
 templ TasksContainer(tasks []model.Task) {
-	<div id="task-container" class="h-[50vh] p-5 m-3 rounded-md border border-black">
+	<div id="task-container" class="relative h-[50vh] p-5 m-3 rounded-md border border-black">
 		<h2 class="text-lg p-2">Available Tasks</h2>
 			<ul id="task-list" class="flex-grow overflow-y-scroll divide-y divide-black">
 				for _, task := range tasks {
 					@TaskItem(task)
 				}
 			</ul>
+		<div id="modal-button" class="absolute bottom-0 right-0 p-2">
+			@Modal("open", "close") {
+				<h1>modal</h1>
+			}
+		</div>
 	</div>
 }
