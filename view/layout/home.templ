@@ -1,14 +1,18 @@
 package layout
 
-import "betteryou/view/component"
+// import "betteryou/view/component"
 import "betteryou/model"
+import "betteryou/view/component"
 
 templ Home(
-	tasks []model.Task,
+	tasks		[]model.Task,
+	activeTask	[]model.ActiveTask,
 ) {
 	@Base() {
-		@LeftHalf()
-		@RightHalf(){
+		@LeftHalf() {
+			@component.ActiveTasksContainer(activeTask)
+		}
+		@RightHalf() {
 			@component.TasksContainer(tasks)
 		}
 	}

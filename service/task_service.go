@@ -14,7 +14,11 @@ func NewTaskService(repository *repository.TaskRepository) *TaskService {
 }
 
 func (s TaskService) Create (name, description string, reward int) error {
-	task := model.Task{Name: name, Description: description, Reward: reward}
+	task := model.Task{
+		Name: name,
+		Description: description,
+		Reward: reward,
+	}
 	return s.repository.Create(&task)
 }
 

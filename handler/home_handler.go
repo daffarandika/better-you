@@ -9,20 +9,26 @@ import (
 )
 
 type HomeHandler struct {
-	taskService	*service.TaskService
+	taskService			*service.TaskService;
+	activeTaskService	*service.ActiveTaskService;
 }
 
-func NewHomeHandler(s *service.TaskService) *HomeHandler {
-	return &HomeHandler{taskService: s}
+func NewHomeHandler(taskService *service.TaskService, activeTaskService *service.ActiveTaskService) *HomeHandler {
+	return &HomeHandler{taskService: taskService, activeTaskService: activeTaskService}
 }
 
 func (h HomeHandler) HomeGetHandler(
 	c echo.Context,
 ) error {
-	tasks, err := h.taskService.GetAll()
-	if err != nil {
-		c.String(http.StatusNotFound, "Error while fetching")
-		return render(c, layout.Home(tasks), http.StatusOK)
+	tasks, err_t := h.taskService.GetAll()
+	activeTasks, err_a := h.activeTaskService.GetAll()
+
+	if err_t != nil {
+		return c.String(http.StatusNotFound, "Error while fetching")
 	}
-	return render(c, layout.Home(tasks), http.StatusOK)
+
+	if err_a != nil {
+		return c.String(http.StatusNotFound, "Error while fetching")
+	}
+	return render(c, layout.Home(tasks, activeTasks), http.StatusOK)
 }

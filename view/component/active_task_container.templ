@@ -1,0 +1,16 @@
+package component
+
+import "betteryou/model"
+
+templ ActiveTasksContainer(activeTasks []model.ActiveTask) {
+	<div id="task-container" class="h-full p-4">
+		<h3 class="text-xl">Available Tasks</h3>
+		<div id="task-list" class="h-[95%] py-6 overflow-y-hidden">
+			<ul class="h-full p-2 space-y-1 list-none overflow-y-auto"> 
+				for _, task := range activeTasks  {
+					@ActiveTaskItem(task)
+				}
+			</ul>
+		</div>
+	</div>
+}

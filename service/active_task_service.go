@@ -1,64 +1,49 @@
 package service
 
-// import (
-// 	"betteryou/model"
-// 	"betteryou/repository"
-// )
-//
-// type ActiveTaskService struct{
-// 	activeTaskRepository *repository.ActiveTaskRepository;
-// 	taskRepository *repository.TaskRepository;
-// }
-//
-// func NewActiveTaskService(
-// 	activeTaskRepository *repository.ActiveTaskRepository,
-// 	taskRepository *repository.TaskRepository,
-// ) *ActiveTaskService {
-// 	return &ActiveTaskService{
-// 		activeTaskRepository: activeTaskRepository,
-// 		taskRepository: taskRepository,
-// 	}
-// }
-//
-// func (s ActiveTaskService) Create (taskID int) error {
-// 	searchedTask, err := s.taskRepository.GetByID(taskID)
-// 	if err != nil {
-// 		return err
-// 	}
-//
-// }
-//
-// func (s TaskService) GetAll () ([]model.Task, error) {
-// 	return s.repository.GetAll()
-// }
-//
-// func (s TaskService) DeleteByID (taskID int) error {
-// 	return s.repository.Delete(taskID)
-// }
-//
-// func (s TaskService) UpdateTaskName(taskID int, newName string) error {
-// 	task, err := s.repository.GetByID(taskID)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	task.Name = newName
-// 	return s.repository.Update(taskID, task)
-// }
-//
-// func (s TaskService) UpdateTaskDescription(taskID int, newDescription string) error {
-// 	task, err := s.repository.GetByID(taskID)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	task.Description = newDescription
-// 	return s.repository.Update(taskID, task)
-// }
-//
-// func (s TaskService) UpdateTaskReward(taskID, newReward int) error {
-// 	task, err := s.repository.GetByID(taskID)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	task.Reward = newReward
-// 	return s.repository.Update(taskID, task)
-// }
+import (
+	"betteryou/model"
+	"betteryou/repository"
+)
+
+type ActiveTaskService struct{
+	activeTaskRepository *repository.ActiveTaskRepository;
+	taskRepository *repository.TaskRepository;
+}
+
+func NewActiveTaskService(activeTaskRepository *repository.ActiveTaskRepository, taskRepository *repository.TaskRepository) *ActiveTaskService {
+	return &ActiveTaskService{ activeTaskRepository: activeTaskRepository, taskRepository: taskRepository }
+}
+
+func (s ActiveTaskService) Create (taskID int) error {
+	activeTask := &model.ActiveTask{
+		TaskID:	taskID,
+		Done:	false,
+	}
+	return s.activeTaskRepository.Create(activeTask)
+}
+
+func (s ActiveTaskService) GetAll () ([]model.ActiveTask, error) {
+	activeTasks, err := s.activeTaskRepository.GetAll()
+	for i, activeTask := range activeTasks {
+		task, err := s.taskRepository.GetByID(activeTask.TaskID)
+		if err != nil {
+			return nil, err
+		}
+		activeTasks[i].Task = *task
+	}
+	return activeTasks, err
+}
+
+func (s ActiveTaskService) DeleteByID (taskID int) error {
+	return s.activeTaskRepository.Delete(taskID)
+}
+
+func (s ActiveTaskService) UpdateDoneStatus(activeTaskID int, done bool) error {
+	activeTask, err := s.activeTaskRepository.GetByID(activeTaskID)
+	if err != nil {
+		return err
+	}
+	activeTask.Done = done
+	return s.activeTaskRepository.Update(activeTaskID, activeTask)
+}
+
