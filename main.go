@@ -25,14 +25,13 @@ func main() {
 	if err != nil {
 		log.Fatal("failed to connect to database")
 	}
-	migrate(db)
 
 	taskRepository := repository.NewTaskRepository(db)
 	taskService := service.NewTaskService(taskRepository)
 	activeTaskRepository := repository.NewActiveTaskRepository(db)
 	activeTaskService := service.NewActiveTaskService(activeTaskRepository, taskRepository)
-
-	activeTaskService.Create(1)
+	userRepository := repository.NewUserRepository(db)
+	userService := service.NewUserService(userRepository)
 
 	e := echo.New()
 	e.Debug = true
@@ -41,7 +40,7 @@ func main() {
 	}))
 	e.Static("/static", "static")
 
-	homeHandler := handler.NewHomeHandler(taskService, activeTaskService)
+	homeHandler := handler.NewHomeHandler(taskService, activeTaskService, userService)
 
 	e.GET("/", homeHandler.HomeGetHandler)
 

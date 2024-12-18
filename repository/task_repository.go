@@ -2,7 +2,6 @@ package repository
 
 import (
 	"betteryou/model"
-
 	"gorm.io/gorm"
 )
 

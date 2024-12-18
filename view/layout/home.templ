@@ -7,12 +7,14 @@ import "betteryou/view/component"
 templ Home(
 	tasks		[]model.Task,
 	activeTask	[]model.ActiveTask,
+	user		*model.User,
 ) {
 	@Base() {
 		@LeftHalf() {
 			@component.ActiveTasksContainer(activeTask)
 		}
 		@RightHalf() {
+			@component.UserContainer(user)
 			@component.TasksContainer(tasks)
 		}
 	}

@@ -11,10 +11,19 @@ import (
 type HomeHandler struct {
 	taskService			*service.TaskService;
 	activeTaskService	*service.ActiveTaskService;
+	userService			*service.UserService;
 }
 
-func NewHomeHandler(taskService *service.TaskService, activeTaskService *service.ActiveTaskService) *HomeHandler {
-	return &HomeHandler{taskService: taskService, activeTaskService: activeTaskService}
+func NewHomeHandler(
+	taskService			*service.TaskService,
+	activeTaskService	*service.ActiveTaskService,
+	userService			*service.UserService,
+) *HomeHandler {
+	return &HomeHandler{
+		taskService: taskService,
+		activeTaskService: activeTaskService,
+		userService: userService,
+	}
 }
 
 func (h HomeHandler) HomeGetHandler(
@@ -22,13 +31,18 @@ func (h HomeHandler) HomeGetHandler(
 ) error {
 	tasks, err_t := h.taskService.GetAll()
 	activeTasks, err_a := h.activeTaskService.GetAll()
+	user, err_u := h.userService.GetByID(1)
 
 	if err_t != nil {
-		return c.String(http.StatusNotFound, "Error while fetching")
+		return c.String(http.StatusNotFound, "Error while fetching tasks")
 	}
 
 	if err_a != nil {
-		return c.String(http.StatusNotFound, "Error while fetching")
+		return c.String(http.StatusNotFound, "Error while fetching active tasks")
 	}
-	return render(c, layout.Home(tasks, activeTasks), http.StatusOK)
+
+	if err_u != nil {
+		return c.String(http.StatusNotFound, "Error while fetching  users")
+	}
+	return render(c, layout.Home(tasks, activeTasks, user), http.StatusOK)
 }
