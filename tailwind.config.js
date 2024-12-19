@@ -6,6 +6,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+		fontFamily: {
+			"atma": ["Atma", "serif"]
+		}
     },
   },
   plugins: [],

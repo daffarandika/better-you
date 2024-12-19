@@ -1,11 +1,16 @@
 package component
 
-import "betteryou/model"
-
+import (
+	"betteryou/model"
+	"fmt"
+)
 
 templ UserContainer(user *model.User) {
-	<div id="task-container" class="h-full p-4">
-		<h3 class="text-xl"> { user.Name } </h3>
+	<div id="user-container" class="h-1/2 p-4 bg-white border border-gray-300 rounded">
+		<div id="user-container-header" class="flex justify-between">
+			<h3 class="text-xl"> { user.Name } </h3>
+			<h3 class="text-xl"> { fmt.Sprintf("%d", user.Coins) } </h3>
+		</div>
 		<div id="modal-button" class="p-2">
 			@Modal("add-task-modal", "Add", "Save") {
 				<h1>modal</h1>

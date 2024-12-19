@@ -47,3 +47,6 @@ func (s ActiveTaskService) UpdateDoneStatus(activeTaskID int, done bool) error {
 	return s.activeTaskRepository.Update(activeTaskID, activeTask)
 }
 
+func (s ActiveTaskService) MarkAsDone(activeTaskID int) error {
+	return s.UpdateDoneStatus(activeTaskID, true)
+}
