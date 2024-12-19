@@ -1,0 +1,21 @@
+package component
+
+import "betteryou/model"
+
+templ RewardContainer(rewards []model.Reward) {
+	<div id="reward-container" class="h-1/2 p-4 bg-white border border-gray-300 rounded">
+		<h3 class="text-xl">Shop</h3>
+		<div id="reward-list" class="h-[85%] py-6 overflow-y-hidden">
+			<ul class="h-full p-2 space-y-1 list-none overflow-y-auto"> 
+				for _, reward := range rewards  {
+					@RewardItem(reward)
+				}
+			</ul>
+		</div>
+		<div id="modal-button" class="p-2">
+			@Modal("add-reward-modal", "New Item", "Save") {
+				<h1>modal</h1>
+			}
+		</div>
+	</div>
+}

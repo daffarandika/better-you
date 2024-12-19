@@ -12,37 +12,44 @@ type HomeHandler struct {
 	taskService			*service.TaskService;
 	activeTaskService	*service.ActiveTaskService;
 	userService			*service.UserService;
+	rewardService		*service.RewardService;
 }
 
 func NewHomeHandler(
 	taskService			*service.TaskService,
 	activeTaskService	*service.ActiveTaskService,
 	userService			*service.UserService,
+	rewardService		*service.RewardService,
 ) *HomeHandler {
 	return &HomeHandler{
-		taskService: taskService,
-		activeTaskService: activeTaskService,
-		userService: userService,
+		taskService:		taskService,
+		activeTaskService:	activeTaskService,
+		userService:		userService,
+		rewardService:		rewardService,
 	}
 }
 
 func (h HomeHandler) HomeGetHandler(
 	c echo.Context,
 ) error {
-	tasks, err_t := h.taskService.GetAll()
-	activeTasks, err_a := h.activeTaskService.GetAll()
-	user, err_u := h.userService.GetByID(1)
-
-	if err_t != nil {
-		return c.String(http.StatusNotFound, "Error while fetching tasks")
+	tasks, err := h.taskService.GetAll()
+	if err != nil {
+		return err
 	}
 
-	if err_a != nil {
-		return c.String(http.StatusNotFound, "Error while fetching active tasks")
+	activeTasks, err := h.activeTaskService.GetAll()
+	if err != nil {
+		return err
 	}
 
-	if err_u != nil {
-		return c.String(http.StatusNotFound, "Error while fetching  users")
+	user, err := h.userService.GetByID(1)
+	if err != nil {
+		return err
 	}
-	return render(c, layout.Home(tasks, activeTasks, user), http.StatusOK)
+
+	rewards, err := h.rewardService.GetAll()
+	if err != nil {
+		return err
+	}
+	return render(c, layout.Home(tasks, activeTasks, rewards, user), http.StatusOK)
 }

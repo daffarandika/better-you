@@ -32,6 +32,8 @@ func main() {
 	activeTaskService := service.NewActiveTaskService(activeTaskRepository, taskRepository)
 	userRepository := repository.NewUserRepository(db)
 	userService := service.NewUserService(userRepository)
+	rewardRepository := repository.NewRewardRepository(db)
+	rewardService := service.NewRewardService(rewardRepository)
 
 	e := echo.New()
 	e.Debug = true
@@ -40,7 +42,7 @@ func main() {
 	}))
 	e.Static("/static", "static")
 
-	homeHandler := handler.NewHomeHandler(taskService, activeTaskService, userService)
+	homeHandler := handler.NewHomeHandler(taskService, activeTaskService, userService, rewardService)
 
 	e.GET("/", homeHandler.HomeGetHandler)
 

@@ -1,0 +1,22 @@
+package component
+
+import "betteryou/model"
+import "fmt"
+
+templ RewardItem(reward model.Reward) {
+	<li id="task-item" class="p-1 rounded border border-black">
+		<div class="flex items-center space-x-4 rtl:space-x-reverse">
+			<div class="flex-1 min-w-0">
+				<p class="text-md font-medium text-black truncate">
+					{ reward.Name }
+				</p>
+				<p class="text-sm text-black truncate">
+					{ reward.Description }
+				</p>
+			</div>
+			<div class="inline-flex items-center text-base text-black">
+				{ fmt.Sprintf("$%d", reward.Cost) }
+			</div>
+		</div>
+	</li>
+}

@@ -7,6 +7,7 @@ import "betteryou/view/component"
 templ Home(
 	tasks		[]model.Task,
 	activeTask	[]model.ActiveTask,
+	rewards		[]model.Reward,
 	user		*model.User,
 ) {
 	@Base() {
@@ -14,7 +15,7 @@ templ Home(
 			@component.ActiveTasksContainer(activeTask)
 		}
 		@RightHalf() {
-			@component.UserContainer(user)
+			@component.RewardContainer(rewards)
 			@component.TasksContainer(tasks)
 		}
 	}
