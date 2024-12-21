@@ -4,7 +4,6 @@ import (
 	"betteryou/service"
 	"betteryou/view/layout"
 	"net/http"
-
 	"github.com/labstack/echo/v4"
 )
 
