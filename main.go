@@ -44,9 +44,11 @@ func main() {
 
 	homeHandler := handler.NewHomeHandler(taskService, activeTaskService, userService, rewardService)
 	taskHandler := handler.NewTaskHandler(taskService)
+	rewardHandler := handler.NewRewardHandler(rewardService)
 
 	e.GET("/", homeHandler.HomeGetHandler)
 	e.POST("/task", taskHandler.CreateNewTask)
+	e.POST("/reward", rewardHandler.CreateNewReward)
 
 	e.Start(":3000")
 }

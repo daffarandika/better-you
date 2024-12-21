@@ -15,13 +15,13 @@ func NewRewardService (repository *repository.RewardRepository) *RewardService {
 	}
 }
 
-func (s RewardService) Create(name, description string, cost int) error {
+func (s RewardService) Create(name, description string, cost int) (*model.Reward, error) {
 	reward := &model.Reward{
 		Name: name,
 		Description: description,
 		Cost: cost,
 	}
-	return s.repository.Create(reward)
+	return reward, s.repository.Create(reward)
 }
 
 func (s RewardService) GetAll() ([]model.Reward, error) {

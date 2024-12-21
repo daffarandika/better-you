@@ -3,10 +3,10 @@ package component
 import "betteryou/model"
 
 templ RewardContainer(rewards []model.Reward) {
-	<div id="reward-container" class="h-1/2 p-4 bg-white border border-gray-300 rounded">
+	<div id="reward-container" class="h-[40%] p-4 bg-white border border-gray-300 rounded">
 		<h3 class="text-xl">Shop</h3>
-		<div id="reward-list" class="h-[85%] py-6 overflow-y-hidden">
-			<ul class="h-full p-2 space-y-1 list-none overflow-y-auto"> 
+		<div  class="h-[80%] py-6 overflow-y-hidden">
+			<ul id="reward-list" class="h-full p-2 space-y-1 list-none overflow-y-auto"> 
 				for _, reward := range rewards  {
 					@RewardItem(reward)
 				}
@@ -14,7 +14,22 @@ templ RewardContainer(rewards []model.Reward) {
 		</div>
 		<div id="modal-button" class="p-2">
 			@Modal("add-reward-modal", "New Item", "Save", false) {
-				<h1>modal</h1>
+				<div class="relative flex-auto max-w-sm mx-auto w-80 h-fit">
+						<h3 class="text-xl py-4 font-medium">New Reward</h3>
+						<div class="mb-5">
+							<label for="name" class="block mb-2 text-sm font-medium text-black">Reward Name</label>
+							<input type="text" id="name" name="name" class="bg-white border border-gray-300 text-black text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5" required />
+						</div>
+						<div class="mb-5">
+							<label for="description" class="block mb-2 text-sm font-medium text-black">Reward Description</label>
+							<textarea id="message" rows="3" name="description"  id="description" class="bg-white border border-gray-300 text-black text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5" required/>
+						</div>
+						<div class="mb-5">
+							<label for="reward" class="block mb-2 text-sm font-medium text-black">Cost</label>
+							<input type="number" id="reward" name="cost" class="bg-white border border-gray-300 text-black text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5" required/>
+						</div>
+						<button hx-post="/reward" hx-swap="beforeend" hx-target="#reward-list" hx-on::after-request="closeModal(this.parentElement.parentElement.parentElement)" id="close-button" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">Save</button> 
+				</div>
 			}
 		</div>
 	</div>
