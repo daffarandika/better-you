@@ -5,8 +5,8 @@ import "betteryou/model"
 templ ActiveTasksContainer(activeTasks []model.ActiveTask) {
 	<div id="task-container" class="h-full p-4 bg-white border border-gray-300 rounded">
 		<h3 class="text-xl">Active Quest</h3>
-		<div id="task-list" class="h-[95%] py-6 overflow-y-hidden">
-			<ul class="h-full p-2 space-y-1 list-none overflow-y-auto"> 
+		<div class="h-[95%] py-6 overflow-y-hidden">
+			<ul id="active-task-list" class="h-full p-2 space-y-1 list-none overflow-y-auto"> 
 				for _, task := range activeTasks  {
 					@ActiveTaskItem(task)
 				}

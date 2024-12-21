@@ -13,13 +13,13 @@ func NewTaskService(repository *repository.TaskRepository) *TaskService {
 	return &TaskService{repository: repository}
 }
 
-func (s TaskService) Create (name, description string, reward int) error {
+func (s TaskService) Create (name, description string, reward int) (*model.Task, error) {
 	task := model.Task{
 		Name: name,
 		Description: description,
 		Reward: reward,
 	}
-	return s.repository.Create(&task)
+	return &task, s.repository.Create(&task)
 }
 
 func (s TaskService) GetAll () ([]model.Task, error) {

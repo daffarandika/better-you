@@ -43,8 +43,10 @@ func main() {
 	e.Static("/static", "static")
 
 	homeHandler := handler.NewHomeHandler(taskService, activeTaskService, userService, rewardService)
+	taskHandler := handler.NewTaskHandler(taskService)
 
 	e.GET("/", homeHandler.HomeGetHandler)
+	e.POST("/task", taskHandler.CreateNewTask)
 
 	e.Start(":3000")
 }
