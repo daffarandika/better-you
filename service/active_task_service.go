@@ -14,12 +14,17 @@ func NewActiveTaskService(activeTaskRepository *repository.ActiveTaskRepository,
 	return &ActiveTaskService{ activeTaskRepository: activeTaskRepository, taskRepository: taskRepository }
 }
 
-func (s ActiveTaskService) Create (taskID int) error {
+func (s ActiveTaskService) Create (taskID int) (*model.ActiveTask, error) {
+	task, err := s.taskRepository.GetByID(taskID)
+	if err != nil {
+		return nil, err
+	}
 	activeTask := &model.ActiveTask{
 		TaskID:	taskID,
+		Task:	*task,
 		Done:	false,
 	}
-	return s.activeTaskRepository.Create(activeTask)
+	return activeTask, s.activeTaskRepository.Create(activeTask)
 }
 
 func (s ActiveTaskService) GetAll () ([]model.ActiveTask, error) {

@@ -41,7 +41,7 @@ func (h HomeHandler) HomeGetHandler(
 		return err
 	}
 
-	user, err := h.userService.GetByID(1)
+	user, err := h.userService.GetByID(2)
 	if err != nil {
 		return err
 	}

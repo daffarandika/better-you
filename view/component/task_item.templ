@@ -7,7 +7,7 @@ import (
 
 templ TaskItem(task model.Task) {
 	<li id="task-item" class="p-1 rounded border border-black">
-		<div class="flex items-center space-x-4 rtl:space-x-reverse">
+		<div class="h-full flex items-center space-x-4 rtl:space-x-reverse">
 			<div class="flex-1 min-w-0">
 				<p class="text-md font-medium text-black truncate">
 					{ task.Name }
@@ -16,8 +16,9 @@ templ TaskItem(task model.Task) {
 					{ task.Description }
 				</p>
 			</div>
-			<div class="inline-flex items-center text-base text-black">
-				{ fmt.Sprintf("$%d", task.Reward) }
+			<div class="flex items-center gap-2">
+				<span class="text-base text-black"> { fmt.Sprintf("$%d", task.Reward) } </span>
+				<button hx-post={ fmt.Sprintf("/activate-task/%d", task.ID) } hx-swap="beforeend" hx-target="#active-task-list" hx-on::after-request="closeModal(this.parentElement.parentElement.parentElement)" id="close-button" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5">Activate</button> 
 			</div>
 		</div>
 	</li>

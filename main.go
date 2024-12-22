@@ -18,6 +18,7 @@ func migrate(db *gorm.DB) {
 	db.AutoMigrate(&model.ActiveTask{})
 	db.AutoMigrate(&model.Reward{})
 	db.AutoMigrate(&model.Transaction{})
+	db.AutoMigrate(&model.User{})
 }
 
 func main() {
@@ -38,17 +39,19 @@ func main() {
 	e := echo.New()
 	e.Debug = true
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
-	  Format: "method=${method}, uri=${uri}, status=${status}\n",
+		Format: "method=${method}, uri=${uri}, status=${status}\n",
 	}))
 	e.Static("/static", "static")
 
 	homeHandler := handler.NewHomeHandler(taskService, activeTaskService, userService, rewardService)
 	taskHandler := handler.NewTaskHandler(taskService)
 	rewardHandler := handler.NewRewardHandler(rewardService)
+	activeTaskHandler := handler.NewActiveTaskHandler(activeTaskService)
 
 	e.GET("/", homeHandler.HomeGetHandler)
 	e.POST("/task", taskHandler.CreateNewTask)
 	e.POST("/reward", rewardHandler.CreateNewReward)
+	e.POST("/activate-task/:taskID", activeTaskHandler.CreateActiveTask)
 
 	e.Start(":3000")
 }
