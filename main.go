@@ -52,6 +52,7 @@ func main() {
 	e.POST("/task", taskHandler.CreateNewTask)
 	e.POST("/reward", rewardHandler.CreateNewReward)
 	e.POST("/activate-task/:taskID", activeTaskHandler.CreateActiveTask)
+	e.POST("/toggle-active-task/:activeTaskID", activeTaskHandler.ToggleDoneStatus)
 
 	e.Start(":3000")
 }

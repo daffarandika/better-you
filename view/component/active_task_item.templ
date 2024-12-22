@@ -4,7 +4,7 @@ import "betteryou/model"
 import "fmt"
 
 templ ActiveTaskItem(activeTask model.ActiveTask) {
-	<li id="task-item" class="p-1 rounded border border-black">
+	<li id={ fmt.Sprintf("task-item-%d", activeTask.ID) } class="p-1 rounded border border-black">
 		<div class="flex items-center space-x-4 rtl:space-x-reverse">
 			<div class="flex-1 min-w-0">
 				<p class="text-md font-medium text-black truncate">
@@ -17,11 +17,14 @@ templ ActiveTaskItem(activeTask model.ActiveTask) {
 			<div class="inline-flex items-center text-base text-black">
 				{ fmt.Sprintf("$%d", activeTask.Task.Reward) }
 			</div>
-			if activeTask.Done {
-				<div>done</div>
-			} else {
-				<div>not</div>
-			}
+			<input class="accent-black"
+				id={ fmt.Sprintf("task-done-%d", activeTask.ID) }
+				hx-post={ fmt.Sprintf("/toggle-active-task/%d", activeTask.ID)}
+				type="checkbox"
+				if activeTask.Done {
+					checked
+				}
+			/>
 		</div>
 	</li>
 }

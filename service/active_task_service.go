@@ -68,15 +68,11 @@ func (s ActiveTaskService) DeleteByID (taskID int) error {
 	return s.activeTaskRepository.Delete(taskID)
 }
 
-func (s ActiveTaskService) UpdateDoneStatus(activeTaskID int, done bool) error {
+func (s ActiveTaskService) ToggleDoneStatus(activeTaskID int) (*model.ActiveTask, error) {
 	activeTask, err := s.activeTaskRepository.GetByID(activeTaskID)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	activeTask.Done = done
-	return s.activeTaskRepository.Update(activeTaskID, activeTask)
-}
-
-func (s ActiveTaskService) MarkAsDone(activeTaskID int) error {
-	return s.UpdateDoneStatus(activeTaskID, true)
+	activeTask.Done = !activeTask.Done
+	return activeTask, s.activeTaskRepository.Update(activeTaskID, activeTask)
 }

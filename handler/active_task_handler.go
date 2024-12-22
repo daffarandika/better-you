@@ -31,3 +31,17 @@ func (h ActiveTaskHandler) CreateActiveTask (c echo.Context) error {
 
 	return render(c, component.ActiveTaskItem(*activeTask), 200)
 }
+
+func (h ActiveTaskHandler) ToggleDoneStatus (c echo.Context) error {
+	activeTaskID, err := strconv.Atoi(c.Param("activeTaskID"))
+	if err != nil {
+		return err
+	}
+
+	activeTask, err := h.activeTaskService.ToggleDoneStatus(activeTaskID)
+	if err != nil {
+		return err
+	}
+
+	return render(c, component.ActiveTaskItem(*activeTask), 200)
+}

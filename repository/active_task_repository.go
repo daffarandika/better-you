@@ -31,7 +31,7 @@ func (r ActiveTaskRepository) Create(activeTask *model.ActiveTask) error {
 }
 
 func (r ActiveTaskRepository) Update(activeTaskID int, updatedActiveTask *model.ActiveTask) error {
-	result := r.db.Model(&model.Task{}).Where("id = ?", activeTaskID).Updates(updatedActiveTask)
+	result := r.db.Model(&model.ActiveTask{}).Where("id = ?", activeTaskID).Updates(updatedActiveTask)
 	return result.Error
 }
 
