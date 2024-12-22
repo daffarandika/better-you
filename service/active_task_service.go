@@ -3,6 +3,7 @@ package service
 import (
 	"betteryou/model"
 	"betteryou/repository"
+	"time"
 )
 
 type ActiveTaskService struct{
@@ -37,6 +38,30 @@ func (s ActiveTaskService) GetAll () ([]model.ActiveTask, error) {
 		activeTasks[i].Task = *task
 	}
 	return activeTasks, err
+}
+
+func (s ActiveTaskService) GetAllValid () ([]model.ActiveTask, error) {
+	activeTasks, err := s.GetAll()
+	if err != nil { 
+		return nil, err
+	}
+
+	validTasks := []model.ActiveTask{}
+	for _, activeTask := range activeTasks {
+		task, err := s.taskRepository.GetByID(activeTask.TaskID)
+		if err != nil {
+			return nil, err
+		}
+
+		taskActivatedLessThanADayAgo := task.CreatedAt.After(time.Now().Add(-24 * time.Hour))
+		taskNotDone := !activeTask.Done
+
+		if taskActivatedLessThanADayAgo || taskNotDone {
+			validTasks = append(validTasks, activeTask)
+		}
+	}
+
+	return validTasks, err
 }
 
 func (s ActiveTaskService) DeleteByID (taskID int) error {

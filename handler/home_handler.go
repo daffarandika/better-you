@@ -36,7 +36,7 @@ func (h HomeHandler) HomeGetHandler(
 		return err
 	}
 
-	activeTasks, err := h.activeTaskService.GetAll()
+	activeTasks, err := h.activeTaskService.GetAllValid()
 	if err != nil {
 		return err
 	}
