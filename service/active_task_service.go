@@ -30,13 +30,6 @@ func (s ActiveTaskService) Create (taskID int) (*model.ActiveTask, error) {
 
 func (s ActiveTaskService) GetAll () ([]model.ActiveTask, error) {
 	activeTasks, err := s.activeTaskRepository.GetAll()
-	for i, activeTask := range activeTasks {
-		task, err := s.taskRepository.GetByID(activeTask.TaskID)
-		if err != nil {
-			return nil, err
-		}
-		activeTasks[i].Task = *task
-	}
 	return activeTasks, err
 }
 

@@ -5,7 +5,8 @@ import "gorm.io/gorm"
 type transactionType string
 
 const (
-	redeem_reward transactionType = "redeem_reward"
+	task_done transactionType = "task_done"
+	task_undone transactionType = "task_undone" // if user cancels marking task as done
 	item_purcase transactionType =	"item_purcase"
 )
 
