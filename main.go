@@ -35,6 +35,9 @@ func main() {
 	userService := service.NewUserService(userRepository)
 	rewardRepository := repository.NewRewardRepository(db)
 	rewardService := service.NewRewardService(rewardRepository)
+	transactionRepository := repository.NewTransactionRepository(db)
+	transactionService := service.NewTransactionService(transactionRepository)
+
 
 	e := echo.New()
 	e.Debug = true
@@ -46,7 +49,7 @@ func main() {
 	homeHandler := handler.NewHomeHandler(taskService, activeTaskService, userService, rewardService)
 	taskHandler := handler.NewTaskHandler(taskService)
 	rewardHandler := handler.NewRewardHandler(rewardService)
-	activeTaskHandler := handler.NewActiveTaskHandler(activeTaskService)
+	activeTaskHandler := handler.NewActiveTaskHandler(activeTaskService, userService, transactionService)
 
 	e.GET("/", homeHandler.HomeGetHandler)
 	e.POST("/task", taskHandler.CreateNewTask)

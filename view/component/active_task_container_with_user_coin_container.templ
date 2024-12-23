@@ -1,0 +1,8 @@
+package component
+
+import "betteryou/model"
+
+templ ActiveTaskItemWithUserCoinContainer(activeTask *model.ActiveTask, coins int) {
+	@ActiveTaskItem(*activeTask)
+	@UserCoinContainer(coins)
+}

@@ -41,12 +41,7 @@ func (s ActiveTaskService) GetAllValid () ([]model.ActiveTask, error) {
 
 	validTasks := []model.ActiveTask{}
 	for _, activeTask := range activeTasks {
-		task, err := s.taskRepository.GetByID(activeTask.TaskID)
-		if err != nil {
-			return nil, err
-		}
-
-		taskActivatedLessThanADayAgo := task.CreatedAt.After(time.Now().Add(-24 * time.Hour))
+		taskActivatedLessThanADayAgo := activeTask.UpdatedAt.After(time.Now().Add(-24 * time.Hour))
 		taskNotDone := !activeTask.Done
 
 		if taskActivatedLessThanADayAgo || taskNotDone {

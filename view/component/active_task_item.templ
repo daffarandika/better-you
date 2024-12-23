@@ -21,6 +21,8 @@ templ ActiveTaskItem(activeTask model.ActiveTask) {
 				id={ fmt.Sprintf("task-done-%d", activeTask.ID) }
 				hx-post={ fmt.Sprintf("/toggle-active-task/%d", activeTask.ID)}
 				type="checkbox"
+				hx-ext="multi-swap"
+				hx-swap={ fmt.Sprintf("multi:#task-item-%d:outerHTML,#user-coin-container:outerHTML", activeTask.ID) }
 				if activeTask.Done {
 					checked
 				}

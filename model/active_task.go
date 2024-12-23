@@ -1,8 +1,6 @@
 package model
 
 import (
-	"fmt"
-
 	"gorm.io/gorm"
 )
 
@@ -21,7 +19,6 @@ func (at *ActiveTask) BeforeCreate(tx *gorm.DB) error {
 	}
 
 	at.Task = task
-	fmt.Println(at.Task)
 	return nil
 }
 
@@ -36,22 +33,3 @@ func (at *ActiveTask) AfterFind(tx *gorm.DB) error {
 	return nil
 }
 
-func (at *ActiveTask) AfterUpdate(tx *gorm.DB) error {
-	var user *User
-	result := tx.First(&user, 2)
-	if result.Error != nil {
-		return result.Error
-	}
-
-	var task Task
-	result = tx.First(&task, at.TaskID)
-	if result.Error != nil {
-		return result.Error
-	}
-
-	at.Task = task
-
-	user.Coins += task.Reward
-	result = tx.Model(&User{}).Where("id = ?", 2).Updates(user)
-	return result.Error
-}

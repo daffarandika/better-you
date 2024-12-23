@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"betteryou/model"
 	"betteryou/service"
 	"betteryou/view/component"
 	"strconv"
@@ -10,11 +11,19 @@ import (
 
 type ActiveTaskHandler struct {
 	activeTaskService	*service.ActiveTaskService
+	userService			*service.UserService
+	transactionService	*service.TransactionService
 }
 
-func NewActiveTaskHandler (activeTaskService *service.ActiveTaskService) *ActiveTaskHandler {
+func NewActiveTaskHandler (
+	activeTaskService	*service.ActiveTaskService,
+	userService			*service.UserService,
+	transactionService	*service.TransactionService,
+) *ActiveTaskHandler {
 	return &ActiveTaskHandler{
 		activeTaskService:	activeTaskService,
+		userService:		userService,
+		transactionService:	transactionService,
 	}
 }
 
@@ -43,5 +52,17 @@ func (h ActiveTaskHandler) ToggleDoneStatus (c echo.Context) error {
 		return err
 	}
 
-	return render(c, component.ActiveTaskItem(*activeTask), 200)
+	// update a user's coin
+	newCointAmount, err := h.userService.AddCoins(2, activeTask.Task.Reward)
+	if err != nil {
+		return err
+	}
+
+	// create transaction record
+	err = h.transactionService.Create(model.TaskDone, activeTask.Task.Reward)
+	if err != nil {
+		return err
+	}
+
+	return render(c, component.ActiveTaskItemWithUserCoinContainer(activeTask, newCointAmount), 200)
 }

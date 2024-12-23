@@ -48,6 +48,16 @@ func (s UserService) UpdateCoins(userID int, newCoinAmount int) error {
 	return s.repository.Update(userID, user)
 }
 
+func (s UserService) AddCoins(userID int, amountAdded int) (int, error) {
+	user, err := s.repository.GetByID(userID)
+	if err != nil  {
+		return -1, err
+	}
+	newAmount := user.Coins + amountAdded
+	user.Coins = newAmount
+	return newAmount, s.repository.Update(userID, user)
+}
+
 func (s UserService) DeleteByID(userID int) error {
 	return s.repository.Delete(userID)
 }
