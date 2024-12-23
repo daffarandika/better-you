@@ -48,12 +48,13 @@ func main() {
 
 	homeHandler := handler.NewHomeHandler(taskService, activeTaskService, userService, rewardService)
 	taskHandler := handler.NewTaskHandler(taskService)
-	rewardHandler := handler.NewRewardHandler(rewardService)
+	rewardHandler := handler.NewRewardHandler(rewardService, userService, transactionService)
 	activeTaskHandler := handler.NewActiveTaskHandler(activeTaskService, userService, transactionService)
 
 	e.GET("/", homeHandler.HomeGetHandler)
 	e.POST("/task", taskHandler.CreateNewTask)
 	e.POST("/reward", rewardHandler.CreateNewReward)
+	e.POST("/redeem-reward/:rewardID", rewardHandler.RedeemReward)
 	e.POST("/activate-task/:taskID", activeTaskHandler.CreateActiveTask)
 	e.POST("/toggle-active-task/:activeTaskID", activeTaskHandler.ToggleDoneStatus)
 
